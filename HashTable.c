@@ -77,3 +77,23 @@ int hash_table_find(HashTable* self, HashCell* cell) {
 HashCell* hash_table_get_item(HashTable* self, int hash) {
     return self->array[hash];
 }
+
+void hash_table_delete(HashTable* self, HashCell* cell) {
+    int hash, i;
+    HashCell* next;
+    hash = hash_table_get_key(self, cell);
+    if(self->array[hash] == NULL) {
+        return;
+    }
+    if(hash_cell_compare(self->array[hash], cell)) {
+        self->array[hash] = NULL;
+        return;
+    }
+    for(i = 0, next = self->array[hash]; next != NULL; i++, next = next->next) {
+        if(hash_cell_compare(next->next, cell)) {
+            free(next->next);
+            next->next = NULL;
+            return;
+        }
+    }
+}

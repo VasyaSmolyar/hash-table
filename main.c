@@ -36,5 +36,11 @@ int main() {
         printf("Cell 4 %d\n", *(int*)(pcell4->next->data));
     }
 
+    hash_table_delete(&table, &cell2);
+    hash_table_delete(&table, &cell4);
+    pcell2 = hash_table_get_item(&table, hash_table_get_key(&table, &cell2));
+    pcell4 = hash_table_get_item(&table, hash_table_get_key(&table, &cell4));
+    printf("Delete test: %d %d\n", pcell2 == NULL, pcell4->next == NULL);
+
     return 0;
 }
