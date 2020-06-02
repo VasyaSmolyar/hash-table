@@ -2,6 +2,12 @@
 #include <stdlib.h>
 #include <stddef.h>
 
+void hash_cell_create(HashCell* self, void* data, size_t size) {
+    self->data = data;
+    self->size = size;
+    self->next = NULL;
+}
+
 void hash_table_create(HashTable* self, int len) {
     int i;
     self->len = len;

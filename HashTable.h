@@ -6,12 +6,15 @@
 typedef struct hashCell {
     size_t size;
     void* data;
+    void* next;
 } HashCell;
 
 typedef struct hashTable {
     int len;
     HashCell** array;
 } HashTable;
+
+void hash_cell_create(HashCell* self, void* data, size_t size);
 
 void hash_table_create(HashTable* self, int len);
 int hash_table_get_key(HashTable* self, HashCell* cell);
