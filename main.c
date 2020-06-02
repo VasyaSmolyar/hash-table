@@ -32,8 +32,8 @@ int main() {
     if(pcell3 != NULL) {
         printf("Cell 3 %d\n", *(int*)pcell3->data);
     }
-    if(pcell4 != NULL) {
-        printf("Cell 4 %d\n", *(int*)(pcell4->data));
+    if(hash_table_find(&table, &cell4)) {
+        printf("Cell 4 %d\n", *(int*)(pcell4->next->data));
     }
 
     return 0;

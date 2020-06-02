@@ -6,7 +6,7 @@
 typedef struct hashCell {
     size_t size;
     void* data;
-    void* next;
+    struct hashCell* next;
 } HashCell;
 
 typedef struct hashTable {
@@ -15,6 +15,7 @@ typedef struct hashTable {
 } HashTable;
 
 void hash_cell_create(HashCell* self, void* data, size_t size);
+int hash_cell_compare(HashCell* one, HashCell* two);
 
 void hash_table_create(HashTable* self, int len);
 int hash_table_get_key(HashTable* self, HashCell* cell);
