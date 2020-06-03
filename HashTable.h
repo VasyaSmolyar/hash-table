@@ -12,6 +12,7 @@ typedef struct hashCell {
 typedef struct hashTable {
     int len;
     HashCell** array;
+    int* table;
 } HashTable;
 
 void hash_cell_create(HashCell* self, void* data, size_t size);

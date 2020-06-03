@@ -1,6 +1,19 @@
 #include "HashTable.h"
 #include <stdlib.h>
 #include <stddef.h>
+#include <time.h>
+
+void shuffle(int* arr, int N) {
+    int i;
+    srand(time(NULL));
+    for (i = N - 1; i >= 1; i--)
+    {
+        int j = rand() % (i + 1);
+        int tmp = arr[j];
+        arr[j] = arr[i];
+        arr[i] = tmp;
+    }
+}
 
 void hash_cell_create(HashCell* self, void* data, size_t size) {
     self->data = data;
@@ -28,18 +41,21 @@ void hash_table_create(HashTable* self, int len) {
     int i;
     self->len = len;
     self->array = malloc(sizeof(HashCell*) * len);
+    self->table = malloc(sizeof(int) * len);
     for(i = 0; i < len; i++) {
         self->array[i] = NULL;
+        self->table[i] = i;
     }
+    shuffle(self->table, len);
 }
 
 int hash_table_get_key(HashTable* self, HashCell* cell) {
-    int i, sum;
+    int i, h;
     char* p;
-    for(i = 0, sum = 0, p = (char*)cell->data; i < cell->size; i++, p++) {
-        sum += (int)*p;
+    for(i = 0, h = cell->size, p = (char*)cell->data; i < cell->size; i++, p++) {
+        h = self->table[(h + p[i]) % self->len];
     }
-    return sum % self->len;
+    return h;
 }
 
 void hash_table_append(HashTable* self, HashCell* cell) {
