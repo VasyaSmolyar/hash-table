@@ -11,17 +11,17 @@ int main() {
     hash_cell_create(&cell2, "Goodby, world!", sizeof("Goodby, world!"));
     hash_cell_create(&cell3, &a, sizeof(a));
     hash_cell_create(&cell4, &b, sizeof(b));
-    hash_table_create(&table, 10);
+    hash_table_create(&table, 3);
 
     hash_table_append(&table, &cell1);
     hash_table_append(&table, &cell2);
     hash_table_append(&table, &cell3);
     hash_table_append(&table, &cell4);
 
-    pcell1 = hash_table_get_item(&table, hash_table_get_key(&table, &cell1));
-    pcell2 = hash_table_get_item(&table, hash_table_get_key(&table, &cell2));
-    pcell3 = hash_table_get_item(&table, hash_table_get_key(&table, &cell3));
-    pcell4 = hash_table_get_item(&table, hash_table_get_key(&table, &cell4));
+    pcell1 = hash_table_find(&table, &cell1);
+    pcell2 = hash_table_find(&table, &cell2);
+    pcell3 = hash_table_find(&table, &cell3);
+    pcell4 = hash_table_find(&table, &cell4);
 
     if(pcell1 != NULL) {
         printf("Cell 1 %s\n", (char*)pcell1->data);

@@ -1,4 +1,5 @@
 #include "HashTable.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <time.h>
@@ -52,7 +53,7 @@ void hash_table_create(HashTable* self, int len) {
 int hash_table_get_key(HashTable* self, HashCell* cell) {
     int i, h;
     char* p;
-    for(i = 0, h = cell->size, p = (char*)cell->data; i < cell->size; i++, p++) {
+    for(i = 0, h = 0, p = (char*)cell->data; i < cell->size; i++) {
         h = self->table[(h + p[i]) % self->len];
     }
     return h;
@@ -74,20 +75,16 @@ void hash_table_append(HashTable* self, HashCell* cell) {
     }
 }
 
-int hash_table_find(HashTable* self, HashCell* cell) {
-    int hash, res, found;
+HashCell* hash_table_find(HashTable* self, HashCell* cell) {
+    int hash;
     HashCell* next;
     hash = hash_table_get_key(self, cell);
-    if(self->array[hash] == NULL) {
-        return 0;
-    }
-    for(res = 1, found = 0, next = self->array[hash]; next != NULL; res++, next = next->next) {
+    for(next = self->array[hash]; next != NULL; next = next->next) {
         if(hash_cell_compare(next, cell)) {
-            found = 1;
-            break;
+            return next;
         }
     }
-    return found == 1 ? res : 0;
+    return NULL;
 }
 
 HashCell* hash_table_get_item(HashTable* self, int hash) {
@@ -106,6 +103,9 @@ void hash_table_delete(HashTable* self, HashCell* cell) {
         return;
     }
     for(i = 0, next = self->array[hash]; next != NULL; i++, next = next->next) {
+        if(next->next == NULL) {
+            return;
+        }
         if(hash_cell_compare(next->next, cell)) {
             free(next->next);
             next->next = NULL;
